@@ -178,7 +178,11 @@ async function getNewArrivals() {
       image_2,
       category,
       is_active,
-      created_at
+      product_images (
+  image_url,
+  sort_order
+),
+created_at
     `)
     .eq("is_active", true)
     .order("created_at", {
@@ -835,74 +839,81 @@ const editorial =
 
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
 
-              {products.map((product) => (
+              {products.map((product) => {
+  const sortedImages =
+    [...(product.product_images ?? [])]
+      .sort(
+        (a, b) =>
+          Number(a.sort_order ?? 0) -
+          Number(b.sort_order ?? 0)
+      );
 
-                <Link
-                  href={`/shop/${product.slug}`}
-                  key={product.id}
-                  className="group"
-                >
+  const mainImage =
+    sortedImages[0]?.image_url ||
+    product.image_1 ||
+    "/image/image_1.png";
 
-                  <div className="relative aspect-[0.82] overflow-hidden bg-[#f4eeea]">
+  return (
+    <Link
+      href={`/shop/${product.slug}`}
+      key={product.id}
+      className="group"
+    >
 
-                    <Image
-                      src={
-                        product.image_1 ||
-                        "/image/image_1.png"
-                      }
-                      alt={product.name}
-                      fill
-                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                      className="object-cover transition duration-700 group-hover:scale-[1.04]"
-                    />
+      <div className="relative aspect-[0.82] overflow-hidden bg-[#f4eeea]">
 
+        <Image
+          src={mainImage}
+          alt={product.name}
+          fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+          className="object-cover transition duration-700 group-hover:scale-[1.04]"
+        />
 
-                    {/* NEW */}
+        {/* NEW */}
 
-                    <span className="absolute left-3 top-3 bg-white px-2 py-1 text-[7px] tracking-[0.12em] text-[#9a7475]">
-                      NEW
-                    </span>
+        <span className="absolute left-3 top-3 bg-white px-2 py-1 text-[7px] tracking-[0.12em] text-[#9a7475]">
+          NEW
+        </span>
 
+        {/* WISHLIST */}
 
-                    {/* WISHLIST */}
+        <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-lg">
+          ♡
+        </span>
 
-                    <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-lg">
-                      ♡
-                    </span>
-
-                  </div>
-
-
-                  {/* PRODUCT INFO */}
-
-                  <div className="pt-4">
-
-                    <h3 className="text-[9px] tracking-[0.12em]">
-                      {product.name}
-                    </h3>
-
-                    <p className="mt-2 text-[10px]">
-                      ${Number(product.price).toFixed(2)}
-                    </p>
+      </div>
 
 
-                    {/* COLOR DOTS */}
+      {/* PRODUCT INFO */}
 
-                    <div className="mt-3 flex gap-1.5">
+      <div className="pt-4">
 
-                      <span className="h-2 w-2 rounded-full border border-[#c9b8b0] bg-[#eee2d8]" />
+        <h3 className="text-[9px] tracking-[0.12em]">
+          {product.name}
+        </h3>
 
-                      <span className="h-2 w-2 rounded-full bg-[#d8c1b5]" />
+        <p className="mt-2 text-[10px]">
+          ${Number(product.price).toFixed(2)}
+        </p>
 
-                      <span className="h-2 w-2 rounded-full bg-[#b79c8e]" />
+        {/* COLOR DOTS */}
 
-                    </div>
+        <div className="mt-3 flex gap-1.5">
 
-                  </div>
+          <span className="h-2 w-2 rounded-full border border-[#c9b8b0] bg-[#eee2d8]" />
 
-                </Link>
+          <span className="h-2 w-2 rounded-full bg-[#d8c1b5]" />
 
-              ))}
+          <span className="h-2 w-2 rounded-full bg-[#b79c8e]" />
+
+        </div>
+
+      </div>
+
+    </Link>
+  );
+})}
 
             </div>
 
@@ -933,8 +944,6 @@ const editorial =
         </div>
 
       </section>
-
-
      {/* =====================================================
     EDITORIAL
 ===================================================== */}

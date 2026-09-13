@@ -79,6 +79,12 @@ export default async function AdminLayout({
             >
               PRODUCTS
             </Link>
+            <Link
+    href="/admin/chat"
+    className="hover:opacity-60"
+  >
+    CHAT
+  </Link>
 
           </nav>
 
