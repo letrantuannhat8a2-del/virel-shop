@@ -718,7 +718,7 @@ export default function ProductDetails({
                       className="col-span-2 flex justify-center py-4 sm:py-8"
                     >
 
-                      <div className="relative aspect-[3/4] w-[72%] overflow-hidden bg-[#f1e6e2] sm:w-[58%] lg:w-[48%]">
+                      <div className="relative aspect-square w-[72%] overflow-hidden bg-[#f1e6e2] sm:w-[58%] lg:w-[48%]">
 
                         <Image
                           src={image}
@@ -741,7 +741,7 @@ export default function ProductDetails({
 
                   <div
                     key={`${image}-${index}`}
-                    className="relative aspect-[3/4] overflow-hidden bg-[#f1e6e2]"
+                    className="relative aspect-square overflow-hidden bg-[#f1e6e2]"
                   >
 
                     <Image
@@ -1221,7 +1221,7 @@ export default function ProductDetails({
 
               {product.description ? (
 
-                <div className="space-y-7">
+                <div className="space-y-5">
 
                   {formatDescription(
                     product.description
@@ -1246,8 +1246,9 @@ export default function ProductDetails({
                             <h3
                               className="
                                 font-serif
-                                text-[15px]
-                                leading-7
+                                text-[14px]
+sm:text-[15px]
+leading-[1.65]
                                 tracking-[0.02em]
                                 text-[#201b1b]
                               "
@@ -1263,8 +1264,9 @@ export default function ProductDetails({
                                   mt-3
                                   whitespace-pre-line
                                   break-words
-                                  text-[11px]
-                                  leading-[2]
+                                  text-[14px]
+sm:text-[15px]
+leading-[1.65]
                                   tracking-[0.01em]
                                   text-[#756969]
                                 "
@@ -1286,8 +1288,9 @@ export default function ProductDetails({
                           className="
                             whitespace-pre-line
                             break-words
-                            text-[11px]
-                            leading-[2]
+                           text-[14px]
+sm:text-[15px]
+leading-[1.65]
                             tracking-[0.01em]
                             text-[#756969]
                           "
@@ -1305,8 +1308,9 @@ export default function ProductDetails({
 
                 <p
                   className="
-                    text-[11px]
-                    leading-[2]
+                   text-[14px]
+sm:text-[15px]
+leading-[1.65]
                     text-[#756969]
                   "
                 >

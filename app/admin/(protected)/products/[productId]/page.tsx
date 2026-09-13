@@ -392,17 +392,38 @@ export default async function EditProductPage({
         ) ?? ""
       ).trim();
 
-    const price =
-      Number(
-        formData.get(
-          "price"
-        )
+   const price =
+  Number(
+    formData.get(
+      "price"
+    )
+  );
+
+const shippingText =
+  String(
+    formData.get(
+      "shippingText"
+    ) ?? ""
+  ).trim();
+
+const salePercentValue =
+  String(
+    formData.get(
+      "salePercent"
+    ) ?? ""
+  ).trim();
+
+const salePercent =
+  salePercentValue === ""
+    ? 0
+    : Number(
+        salePercentValue
       );
 
-    const isActive =
-      formData.get(
-        "isActive"
-      ) === "on";
+const isActive =
+  formData.get(
+    "isActive"
+  ) === "on";
 
 
     // =====================================
@@ -412,15 +433,21 @@ export default async function EditProductPage({
     if (!name) {
       return;
     }
-
-    if (
-      !Number.isFinite(
-        price
-      ) ||
-      price <= 0
-    ) {
-      return;
-    }
+if (
+  !Number.isFinite(price) ||
+  price <= 0
+) {
+  return;
+}
+   if (
+  !Number.isFinite(
+    salePercent
+  ) ||
+  salePercent < 0 ||
+  salePercent > 100
+) {
+  return;
+}
 
 
     // =====================================
@@ -434,25 +461,32 @@ export default async function EditProductPage({
       await supabaseAdmin
         .from("products")
         .update({
-          name,
+  name,
 
-          price:
-            Number(
-              price.toFixed(
-                2
-              )
-            ),
+  price:
+    Number(
+      price.toFixed(
+        2
+      )
+    ),
 
-          description:
-            description ||
-            null,
+  sale_percent:
+    salePercent,
 
-          is_active:
-            isActive,
+  shipping_text:
+    shippingText ||
+    null,
 
-          updated_at:
-            new Date().toISOString(),
-        })
+  description:
+    description ||
+    null,
+
+  is_active:
+    isActive,
+
+  updated_at:
+    new Date().toISOString(),
+})
         .eq(
           "id",
           productId
@@ -924,7 +958,36 @@ export default async function EditProductPage({
                   />
 
                 </div>
+{/* SALE */}
 
+<div>
+  <label
+    htmlFor="salePercent"
+    className="text-[10px] tracking-[0.18em] text-gray-400"
+  >
+    SALE — %
+  </label>
+
+  <input
+    id="salePercent"
+    name="salePercent"
+    type="number"
+    min="0"
+    max="100"
+    step="1"
+    defaultValue={
+      Number(
+        product.sale_percent ??
+        0
+      )
+    }
+    className="mt-3 w-full border border-black/20 bg-white px-5 py-4 text-sm outline-none focus:border-black"
+  />
+
+  <p className="mt-2 text-[10px] leading-5 text-gray-400">
+    Enter 0 for no sale. Example: 20 = 20% off.
+  </p>
+</div>
 
                 {/* DESCRIPTION */}
 
@@ -954,7 +1017,27 @@ export default async function EditProductPage({
 
             </div>
 
+{/* SHIPPING */}
 
+<div>
+  <label
+    htmlFor="shippingText"
+    className="text-[10px] tracking-[0.18em] text-gray-400"
+  >
+    SHIPPING INFORMATION
+  </label>
+
+  <textarea
+    id="shippingText"
+    name="shippingText"
+    rows={4}
+    defaultValue={
+      product.shipping_text ??
+      "Complimentary shipping on orders over $150."
+    }
+    className="mt-3 w-full resize-none border border-black/20 bg-white px-5 py-4 text-sm leading-6 outline-none focus:border-black"
+  />
+</div>
             {/* =====================================
                 INVENTORY
             ===================================== */}

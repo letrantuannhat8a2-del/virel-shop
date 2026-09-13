@@ -722,68 +722,7 @@ export default async function NewProductPage() {
 
             </div>
 
-            {/* =====================================
-                PRODUCT IMAGES
-            ===================================== */}
-
-            <div className="bg-white p-7 sm:p-8">
-
-              <div>
-
-                <h3 className="text-[11px] tracking-[0.25em]">
-                  SHOE IMAGES
-                </h3>
-
-                <p className="mt-3 text-xs leading-6 text-gray-400">
-                  Upload up to 5 product
-                  images. The first image
-                  will be used as the main
-                  shoe image.
-                </p>
-
-              </div>
-
-              <div className="mt-7 space-y-5">
-
-                {[1, 2, 3, 4, 5].map(
-                  (number) => (
-                    <div
-                      key={
-                        number
-                      }
-                      className="border border-black/10 p-5"
-                    >
-
-                      <label
-                        htmlFor={`image_${number}`}
-                        className="text-[10px] tracking-[0.18em] text-gray-400"
-                      >
-                        {number ===
-                        1
-                          ? "MAIN SHOE IMAGE"
-                          : `IMAGE ${number}`}
-                      </label>
-
-                      <input
-                        id={`image_${number}`}
-                        name={`image_${number}`}
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp"
-                        required={
-                          number ===
-                          1
-                        }
-                        className="mt-4 block w-full cursor-pointer text-xs file:mr-5 file:border-0 file:bg-black file:px-5 file:py-3 file:text-[9px] file:tracking-[0.15em] file:text-white"
-                      />
-
-                    </div>
-                  )
-                )}
-
-              </div>
-
-            </div>
-
+            
             {/* =====================================
                 INVENTORY
             ===================================== */}

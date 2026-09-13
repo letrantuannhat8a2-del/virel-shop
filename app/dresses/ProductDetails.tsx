@@ -12,6 +12,8 @@ type ProductColor = {
 };
 
 type Product = {
+  sale_percent?: number | null;
+shipping_text?: string | null;
   id: string;
   name: string;
   slug: string;
@@ -149,6 +151,28 @@ export default function ProductDetails({
     ).format(
       value
     );
+    const salePercent =
+  Math.min(
+    100,
+    Math.max(
+      0,
+      Number(
+        product.sale_percent ?? 0
+      )
+    )
+  );
+
+const hasSale =
+  salePercent > 0;
+
+const originalPrice =
+  Number(product.price);
+
+const salePrice =
+  hasSale
+    ? originalPrice *
+      (1 - salePercent / 100)
+    : originalPrice;
 
   // ========================================
   // FIND VARIANT
@@ -367,9 +391,9 @@ export default function ProductDetails({
           product.name,
 
         price:
-          Number(
-            product.price
-          ),
+  Number(
+    salePrice.toFixed(2)
+  ),
 
         image:
           mainImage,
@@ -549,13 +573,27 @@ export default function ProductDetails({
           {product.name}
         </h1>
 
-        <p className="mt-3 text-sm sm:mt-4">
-          {formatUSD(
-            Number(
-              product.price
-            )
-          )}
-        </p>
+        <div className="mt-5">
+  {hasSale ? (
+    <div className="flex items-center gap-3">
+      <span className="text-sm font-medium text-[#a87578]">
+        {formatUSD(salePrice)}
+      </span>
+
+      <span className="text-xs text-[#9c8f8f] line-through">
+        {formatUSD(originalPrice)}
+      </span>
+
+      <span className="bg-[#f0dfdb] px-2 py-1 text-[8px] tracking-[0.14em] text-[#a87578]">
+        {salePercent}% OFF
+      </span>
+    </div>
+  ) : (
+    <p className="text-sm tracking-[0.05em]">
+      {formatUSD(originalPrice)}
+    </p>
+  )}
+</div>
 
         {/* ========================================
             COLOR
@@ -924,7 +962,22 @@ export default function ProductDetails({
           </p>
 
         </div>
+{/* ========================================
+    SHIPPING
+======================================== */}
 
+<div className="mt-6 border-t border-black/10 pt-6 sm:mt-7 sm:pt-7">
+
+  <p className="text-[10px] tracking-[0.18em] sm:text-xs">
+    SHIPPING
+  </p>
+
+  <p className="mt-3 whitespace-pre-line text-xs leading-6 text-gray-600 sm:mt-4 sm:text-sm sm:leading-7">
+    {product.shipping_text ||
+      "Complimentary shipping on orders over $150."}
+  </p>
+
+</div>
         {/* ========================================
             AVAILABILITY
         ======================================== */}

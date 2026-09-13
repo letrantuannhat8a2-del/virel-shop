@@ -401,64 +401,74 @@ const editorial =
 
       <header className="sticky top-0 z-50 border-b border-[#201b1b]/10 bg-[#fcfaf7]/95 backdrop-blur-md">
 
-        <div className="mx-auto grid h-[86px] max-w-[1800px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:px-10">
+        <div className="relative mx-auto flex h-[86px] max-w-[1800px] items-center px-6 lg:px-10">
 
-          {/* LEFT NAV */}
+         {/* LEFT NAV */}
 
-          <nav className="hidden items-center gap-6 xl:flex">
+<nav className=" mr-auto hidden items-center gap-4 whitespace-nowrap xl:flex 2xl:gap-6">
 
-            <Link
-  href="/exclusive"
-  className="text-[9px] tracking-[0.12em] transition hover:text-[#b47d80]"
->
-  EXCLUSIVE COLLECTION
-</Link>
+  <Link
+    href="/exclusive"
+    className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+  >
+    EXCLUSIVE COLLECTION
+  </Link>
 
-            <Link
-              href="/shop?category=bridal"
-              className="text-[9px] tracking-[0.12em] transition hover:text-[#b47d80]"
-            >
-              WEDDING SHOES
-            </Link>
+  <Link
+    href="/shop"
+    className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+  >
+    ALL SHOES
+  </Link>
 
-            <Link
-              href="/shop?category=heels"
-              className="text-[9px] tracking-[0.12em] transition hover:text-[#b47d80]"
-            >
-              HEELS
-            </Link>
+  <Link
+    href="/shop?category=bridal"
+    className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+  >
+    WEDDING SHOES
+  </Link>
 
-            <Link
-              href="/shop?category=flats"
-              className="text-[9px] tracking-[0.12em] transition hover:text-[#b47d80]"
-            >
-              FLATS
-            </Link>
+  <Link
+    href="/shop?category=heels"
+    className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+  >
+    HEELS
+  </Link>
 
-          </nav>
+  <Link
+    href="/shop?category=platform"
+    className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+  >
+    PLATFORM
+  </Link>
 
+  <Link
+    href="/shop?category=evening"
+    className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+  >
+    EVENING
+  </Link>
 
-          {/* LOGO */}
+  <Link
+    href="/shop?category=flats"
+    className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+  >
+    FLATS
+  </Link>
 
-          <Link
-            href="/"
-            className="text-center"
-          >
+  <Link
+    href="/shop?category=accessories"
+    className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+  >
+    ACCESSORIES
+  </Link>
 
-            <span className="block font-serif text-[34px] leading-none tracking-[0.25em] sm:text-[39px]">
-              VIREL
-            </span>
-
-            <span className="mt-1 block text-[7px] tracking-[0.45em] text-[#8e7475]">
-              BRIDAL SHOES
-            </span>
-
-          </Link>
+</nav>
 
 
           {/* RIGHT NAV */}
 
-          <div className="flex items-center justify-end gap-5">
+          <div className=" ml-auto flex items-center justify-end gap-5">
 
             {/* SEARCH */}
 
@@ -583,37 +593,29 @@ const editorial =
         </div>
 
 
-        {/* SECONDARY NAV */}
+       {/* SECONDARY NAV */}
 
-        <div className="hidden border-t border-[#201b1b]/10 xl:block">
+<div className="hidden border-t border-[#201b1b]/10 xl:block">
 
-          <div className="flex h-11 items-center justify-center gap-9">
+  <div className="flex h-11 items-center justify-center gap-9">
 
-            <Link
-              href="/shop?category=accessories"
-              className="text-[8px] tracking-[0.18em] transition hover:text-[#b47d80]"
-            >
-              ACCESSORIES
-            </Link>
+    <Link
+      href="/shop?sale=true"
+      className="text-[8px] tracking-[0.18em] text-[#a16f71] transition hover:text-[#201b1b]"
+    >
+      SALE
+    </Link>
 
-            <Link
-              href="/shop?sale=true"
-              className="text-[8px] tracking-[0.18em] text-[#a16f71] transition hover:text-[#201b1b]"
-            >
-              SALE
-            </Link>
+    <Link
+      href="/about"
+      className="text-[8px] tracking-[0.18em] transition hover:text-[#b47d80]"
+    >
+      ABOUT US
+    </Link>
 
-            <Link
-  href="/about"
-  className="text-[8px] tracking-[0.18em] transition hover:text-[#b47d80]"
->
-  ABOUT US
-</Link>
+  </div>
 
-          </div>
-
-        </div>
-
+</div>
 
         {/* MOBILE NAV */}
 

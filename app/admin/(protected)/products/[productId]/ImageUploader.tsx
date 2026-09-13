@@ -42,59 +42,64 @@ export default function ImageUploader({
   // =====================================
   // UPLOAD / REPLACE
   // =====================================
+async function uploadImage(
+  event: React.ChangeEvent<HTMLInputElement>
+) {
+  const selectedFiles = Array.from(
+    event.target.files ?? []
+  );
 
-  async function uploadImage(
-    event: React.ChangeEvent<HTMLInputElement>
-  ) {
-    const file =
-      event.target.files?.[0];
+  if (selectedFiles.length === 0) {
+    return;
+  }
 
-    if (!file) {
-      return;
-    }
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+  ];
 
-    // ===================================
-    // FILE TYPE
-    // ===================================
+  // Nếu đang REPLACE thì chỉ lấy 1 ảnh
+  const filesToUpload = replacingId
+    ? [selectedFiles[0]]
+    : selectedFiles;
 
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-    ];
-
-    if (
-      !allowedTypes.includes(
-        file.type
-      )
-    ) {
+  // Kiểm tra tất cả ảnh trước khi upload
+  for (const file of filesToUpload) {
+    if (!allowedTypes.includes(file.type)) {
       alert(
-        "Please choose a JPG, PNG or WebP image."
+        `${file.name} is not a JPG, PNG or WebP image.`
       );
 
       event.target.value = "";
       return;
     }
-
-    // ===================================
-    // FILE SIZE
-    // ===================================
 
     if (
       file.size >
       10 * 1024 * 1024
     ) {
       alert(
-        "Image must be smaller than 10 MB."
+        `${file.name} is larger than 10 MB.`
       );
 
       event.target.value = "";
       return;
     }
+  }
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
+  try {
+    // Upload từng ảnh một
+    for (
+      let index = 0;
+      index < filesToUpload.length;
+      index++
+    ) {
+      const file =
+        filesToUpload[index];
+
       const formData =
         new FormData();
 
@@ -113,7 +118,11 @@ export default function ImageUploader({
         slug
       );
 
-      if (replacingId) {
+      // REPLACE chỉ áp dụng cho 1 ảnh
+      if (
+        replacingId &&
+        index === 0
+      ) {
         formData.append(
           "imageId",
           replacingId
@@ -135,51 +144,62 @@ export default function ImageUploader({
       if (!response.ok) {
         throw new Error(
           data.message ||
-            "Upload failed."
+            `Upload failed: ${file.name}`
         );
       }
+    }
 
-      window.location.reload();
-    } catch (error) {
-      console.error(
-        "Upload image error:",
-        error
-      );
+    window.location.reload();
+  } catch (error) {
+    console.error(
+      "Upload image error:",
+      error
+    );
 
-      alert(
-        error instanceof Error
-          ? error.message
-          : "Upload image failed."
-      );
-    } finally {
-      setLoading(false);
-      setReplacingId(null);
+    alert(
+      error instanceof Error
+        ? error.message
+        : "Upload image failed."
+    );
+  } finally {
+    setLoading(false);
+    setReplacingId(null);
 
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
+    if (inputRef.current) {
+      inputRef.current.value = "";
     }
   }
+}
+
+  
 
   // =====================================
   // ADD IMAGE
   // =====================================
 
-  function addImage() {
-    setReplacingId(null);
-    inputRef.current?.click();
+ function addImage() {
+  setReplacingId(null);
+
+  if (inputRef.current) {
+    inputRef.current.multiple = true;
+    inputRef.current.click();
   }
+}
 
   // =====================================
   // REPLACE IMAGE
   // =====================================
 
   function replaceImage(
-    imageId: string
-  ) {
-    setReplacingId(imageId);
-    inputRef.current?.click();
+  imageId: string
+) {
+  setReplacingId(imageId);
+
+  if (inputRef.current) {
+    inputRef.current.multiple = false;
+    inputRef.current.click();
   }
+}
 
   // =====================================
   // REMOVE IMAGE
@@ -304,14 +324,15 @@ export default function ImageUploader({
           HIDDEN INPUT
       ================================= */}
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        onChange={uploadImage}
-        disabled={loading}
-        className="hidden"
-      />
+    <input
+  ref={inputRef}
+  type="file"
+  accept="image/jpeg,image/png,image/webp"
+  multiple
+  onChange={uploadImage}
+  disabled={loading}
+  className="hidden"
+/>
 
 
       {/* =================================
@@ -452,9 +473,9 @@ export default function ImageUploader({
           disabled:opacity-50
         "
       >
-        {loading
-          ? "UPLOADING..."
-          : "+ ADD IMAGE"}
+       {loading
+  ? "UPLOADING..."
+  : "+ ADD IMAGES"}
       </button>
 
 

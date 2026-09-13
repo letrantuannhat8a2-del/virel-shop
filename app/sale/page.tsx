@@ -77,7 +77,8 @@ async function getProducts(
     sort_order
   )
 `)
-    .eq("is_active", true);
+   .eq("is_active", true)
+.gt("sale_percent", 0);
 if (searchParams.sale === "true") {
   query = query.gt(
     "sale_percent",
@@ -222,8 +223,8 @@ function buildUrl(
   const query = search.toString();
 
   return query
-    ? `/shop?${query}`
-    : "/shop";
+  ? `/sale?${query}`
+  : "/sale";
 }
 
 
@@ -270,7 +271,7 @@ export default async function ShopPage({
 
           {/* LEFT */}
 
-          <nav className="hidden items-center gap-6 whitespace-nowrap xl:flex">
+          <nav className="hidden items-center gap-4 whitespace-nowrap xl:flex 2xl:gap-6">
 
   <Link
     href="/exclusive"
@@ -279,14 +280,22 @@ export default async function ShopPage({
     EXCLUSIVE COLLECTION
   </Link>
 
-  <Link
-    href="/shop?sale=true"
-    className="text-[8px] tracking-[0.1em] text-[#a87578] transition hover:text-[#8f6265]"
-  >
-    SALE
-  </Link>
+  {categories.map((category) => (
+    <Link
+      key={category.label}
+      href={
+        category.value
+          ? `/shop?category=${category.value}`
+          : "/shop"
+      }
+      className="text-[8px] tracking-[0.1em] transition hover:text-[#b47d80]"
+    >
+      {category.label}
+    </Link>
+  ))}
 
 </nav>
+
 
           {/* LOGO */}
 
@@ -434,54 +443,47 @@ export default async function ShopPage({
         </div>
 
 
-       {/* =================================================
-    CATEGORY NAV / SALE
-================================================= */}
+        {/* =================================================
+            CATEGORY NAV
+        ================================================= */}
 
-<div className="border-t border-[#201b1b]/10">
+        <div className="border-t border-[#201b1b]/10">
 
-  {params.sale === "true" ? (
+          <div className="mx-auto flex max-w-[1700px] items-center justify-center gap-6 overflow-x-auto px-5 py-4 sm:gap-9">
 
-    <div className="flex items-center justify-center px-5 py-5">
-      <p className="text-[10px] tracking-[0.35em] text-[#a87578]">
-        SALE
-      </p>
-    </div>
+            {categories.map(
+              (category) => {
 
-  ) : (
+                const isActive =
+                  activeCategory ===
+                  category.value;
 
-    <div className="mx-auto flex max-w-[1700px] items-center justify-center gap-6 overflow-x-auto px-5 py-4 sm:gap-9">
+                return (
+                  <Link
+                    key={category.label}
+                    href={
+                      category.value
+                        ? `/shop?category=${category.value}`
+                        : "/shop"
+                    }
+                    className={`whitespace-nowrap border-b pb-1 text-[8px] tracking-[0.18em] transition ${
+                      isActive
+                        ? "border-[#201b1b] text-[#201b1b]"
+                        : "border-transparent text-[#7e7070] hover:border-[#b47d80] hover:text-[#b47d80]"
+                    }`}
+                  >
+                    {category.label}
+                  </Link>
+                );
+              }
+            )}
 
-      {categories.map((category) => {
-        const isActive =
-          activeCategory === category.value;
+          </div>
 
-        return (
-          <Link
-            key={category.label}
-            href={
-              category.value
-                ? `/shop?category=${category.value}`
-                : "/shop"
-            }
-            className={`whitespace-nowrap border-b pb-1 text-[8px] tracking-[0.18em] transition ${
-              isActive
-                ? "border-[#201b1b] text-[#201b1b]"
-                : "border-transparent text-[#7e7070] hover:border-[#b47d80] hover:text-[#b47d80]"
-            }`}
-          >
-            {category.label}
-          </Link>
-        );
-      })}
+        </div>
 
-    </div>
+      </header>
 
-  )}
-
-</div>
-
-</header>
 
       {/* =================================================
           SHOP HERO
@@ -490,18 +492,12 @@ export default async function ShopPage({
       <section className="border-b border-[#201b1b]/10 bg-[#f2e5e0] px-6 py-20 text-center sm:py-24">
 
         <p className="text-[8px] tracking-[0.4em] text-[#a77d7f]">
-          THE VIREL COLLECTION
-        </p>
+  VIREL SPECIAL EDIT
+</p>
 
         <h1 className="mt-5 font-serif text-5xl tracking-[0.02em] sm:text-6xl md:text-7xl">
-          {activeCategory
-            ? categories.find(
-                (item) =>
-                  item.value ===
-                  activeCategory
-              )?.label
-            : "All Shoes"}
-        </h1>
+  Sale
+</h1>
 
         <p className="mx-auto mt-5 max-w-xl text-xs leading-6 text-[#766969]">
           Discover refined footwear designed
@@ -526,7 +522,7 @@ export default async function ShopPage({
           {/* SEARCH FORM */}
 
           <form
-            action="/shop"
+            action="/sale"
             method="GET"
             className="flex w-full max-w-xl border-b border-[#201b1b]/30"
           >
